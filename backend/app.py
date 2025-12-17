@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from models import db
+from flask_migrate import Migrate
 from config import config
 from routes.auth import auth_bp
 from routes.routines import routines_bp
@@ -18,6 +19,7 @@ def create_app(config_name=None):
     
     # Initialize database
     db.init_app(app)
+    Migrate(app, db)
     
     # Enable CORS
     CORS(app)
