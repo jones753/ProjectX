@@ -11,6 +11,9 @@ class Routine {
   final int difficulty;
   final bool isActive;
   final DateTime createdAt;
+  final int currentStreak; // New field
+  final int longestStreak; // New field
+  final DateTime? lastCompletedDate; // New field
 
   Routine({
     required this.id,
@@ -23,6 +26,9 @@ class Routine {
     required this.difficulty,
     required this.isActive,
     required this.createdAt,
+    this.currentStreak = 0,
+    this.longestStreak = 0,
+    this.lastCompletedDate,
   });
 
   factory Routine.fromJson(Map<String, dynamic> json) {
@@ -39,6 +45,11 @@ class Routine {
       createdAt: DateTime.parse(
         (json['created_at'] ?? DateTime.now().toIso8601String()),
       ),
+      currentStreak: json['current_streak'] ?? 0,
+      longestStreak: json['longest_streak'] ?? 0,
+      lastCompletedDate: json['last_completed_date'] != null 
+          ? DateTime.parse(json['last_completed_date']) 
+          : null,
     );
   }
 }

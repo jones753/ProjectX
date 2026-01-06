@@ -1,0 +1,5 @@
+- Personal AI mentor
+- When creating the personal mentor, user can choose the mentor personality
+- Based on the personality and the what the user tells about his goals etc the mentor creates some routines for him.
+- The user then daily logs how did the routines went etc.
+- In the end of the day the mentor gives feedback.

@@ -39,7 +39,10 @@ dependencies:
   http: ^1.1.0
   
   # Secure storage
-  flutter_secure_storage: ^9.0.0
+  flutter_secure_storage: ^10.0.0
+  
+  # Persist simple settings like theme preference
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
   flutter_test:

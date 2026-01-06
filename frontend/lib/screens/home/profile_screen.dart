@@ -23,13 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            onPressed: _logout,
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+        elevation: 0,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -56,187 +50,244 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             final profile = snapshot.data!;
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header Card
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Theme.of(context).colorScheme.primary,
+                  // Profile Header
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFF007AFF).withOpacity(0.25),
+                          const Color(0xFF007AFF).withOpacity(0.10),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x0D007AFF),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF007AFF), Color(0xFF0A84FF)],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
                             child: Text(
                               '${profile['first_name']?[0] ?? 'U'}${profile['last_name']?[0] ?? 'A'}',
                               style: const TextStyle(
                                 fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            '${profile['first_name']} ${profile['last_name']}',
-                            style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          '${profile['first_name']} ${profile['last_name']}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '@${profile['username']}',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '@${profile['username']}',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF8E8E93),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            profile['email'],
-                            style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          profile['email'],
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF8E8E93),
                           ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => EditProfileScreen(profile: profile),
-                                  ),
-                                ).then((_) {
-                                  setState(() {
-                                    _profileFuture = AuthService().getProfile();
-                                  });
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => EditProfileScreen(profile: profile),
+                                ),
+                              ).then((_) {
+                                setState(() {
+                                  _profileFuture = AuthService().getProfile();
                                 });
-                              },
-                              child: const Text('Edit Profile'),
+                              });
+                            },
+                            child: const Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
                   Text(
                     'Mentor Settings',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
                   ),
                   const SizedBox(height: 12),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Mentor Style',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              (profile['mentor_style'] ?? 'balanced').toString().toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Mentor Intensity',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: LinearProgressIndicator(
-                                  value: (profile['mentor_intensity'] ?? 5) / 10,
-                                  minHeight: 8,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                '${profile['mentor_intensity'] ?? 5}/10',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFF007AFF).withOpacity(0.15),
+                          const Color(0xFF007AFF).withOpacity(0.05),
                         ],
                       ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x0D000000),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Mentor Style',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Color(0xFF8E8E93),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF007AFF).withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    profile['mentor_style'] ?? 'Standard',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF007AFF),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: const Color(0xFF8E8E93),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        const Divider(height: 1),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Intensity',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Color(0xFF8E8E93),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFF9500).withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    '${profile['mentor_intensity'] ?? 'Medium'} Level',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFFFF9500),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              color: const Color(0xFF8E8E93),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 24),
-                  if (profile['bio'] != null && profile['bio'].isNotEmpty) ...[
-                    Text(
-                      'Bio',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 12),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          profile['bio'],
-                          style: Theme.of(context).textTheme.bodyMedium,
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: OutlinedButton(
+                      onPressed: _logout,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color(0xFFFF3B30),
+                      ),
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                  ],
-                  if (profile['goals'] != null && profile['goals'].isNotEmpty) ...[
-                    Text(
-                      'Goals',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 12),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          profile['goals'],
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                  Text(
-                    'Account Information',
-                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 12),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _InfoRow(
-                            label: 'Member Since',
-                            value: DateTime.parse(profile['created_at']).toString().split(' ')[0],
-                          ),
-                          const Divider(),
-                          _InfoRow(
-                            label: 'User ID',
-                            value: profile['user_id'].toString(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
                 ],
               ),
             );
@@ -269,39 +320,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
+              backgroundColor: const Color(0xFFFF3B30),
             ),
             child: const Text('Logout'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _InfoRow({
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
@@ -351,60 +372,78 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text('Edit Profile'),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
               controller: _firstNameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'First Name',
-                border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _lastNameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Last Name',
-                border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _bioController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Bio',
-                border: OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _goalsController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Goals',
-                border: OutlineInputBorder(),
               ),
               maxLines: 3,
             ),
             const SizedBox(height: 24),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Mentor Style',
-                      style: Theme.of(context).textTheme.titleMedium,
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? const Color(0xFFF2F2F7)
+                    : const Color(0xFF2C2C2E),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mentor Style',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
-                    const SizedBox(height: 12),
-                    DropdownButton<String>(
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.white
+                          : const Color(0xFF3A3A3C),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: DropdownButton<String>(
                       value: _mentorStyle,
                       isExpanded: true,
+                      underline: const SizedBox(),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       items: ['strict', 'gentle', 'balanced', 'hilarious']
                           .map((style) => DropdownMenuItem(
                             value: style,
@@ -417,54 +456,68 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Mentor Intensity',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Slider(
-                            value: _mentorIntensity.toDouble(),
-                            min: 1,
-                            max: 10,
-                            divisions: 9,
-                            label: _mentorIntensity.toString(),
-                            onChanged: (value) {
-                              setState(() {
-                                _mentorIntensity = value.toInt();
-                              });
-                            },
-                          ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Mentor Intensity',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Text(
-                          _mentorIntensity.toString(),
-                          style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(
+                        '$_mentorIntensity/10',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFFF9500),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Slider(
+                    value: _mentorIntensity.toDouble(),
+                    min: 1,
+                    max: 10,
+                    divisions: 9,
+                    label: _mentorIntensity.toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        _mentorIntensity = value.toInt();
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
-              height: 56,
+              height: 50,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _saveProfile,
                 child: _isLoading
                     ? const SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
                       )
-                    : const Text('Save Changes'),
+                    : const Text(
+                        'Save Changes',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
               ),
             ),
-            const SizedBox(height: 16),
           ],
         ),
       ),
