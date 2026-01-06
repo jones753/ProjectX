@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/home/home_screen.dart';
+import 'screens/welcome/welcome_screen.dart';
 import 'services/auth_service.dart';
+import 'services/onboarding_service.dart';
 import 'services/theme_service.dart';
+
+class _AppStartupState {
+  final bool isLoggedIn;
+  final bool hasSeenWelcome;
+
+  const _AppStartupState({
+    required this.isLoggedIn,
+    required this.hasSeenWelcome,
+  });
+}
+
+Future<_AppStartupState> _getStartupState() async {
+  final isLoggedIn = await AuthService().isLoggedIn();
+  final hasSeenWelcome = await OnboardingService.hasSeenWelcome();
+  return _AppStartupState(
+    isLoggedIn: isLoggedIn,
+    hasSeenWelcome: hasSeenWelcome,
+  );
+}
 
 // Gradient constants
 const _primaryGradient = LinearGradient(
@@ -174,19 +195,33 @@ class MyApp extends StatelessWidget {
             ),
           ),
           themeMode: themeMode,
-          home: FutureBuilder<bool>(
-            future: AuthService().isLoggedIn(),
+          home: FutureBuilder<_AppStartupState>(
+            future: _getStartupState(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
+                  backgroundColor: Colors.black,
+                  body: Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF007AFF),
+                    ),
+                  ),
                 );
               }
 
-              if (snapshot.data == true) {
+              final state = snapshot.data!;
+
+              // Priority 1: Check if user is logged in
+              if (state.isLoggedIn) {
                 return const HomeScreen();
               }
 
+              // Priority 2: Show welcome if first time
+              if (!state.hasSeenWelcome) {
+                return const WelcomeScreen();
+              }
+
+              // Default: Show login
               return const LoginScreen();
             },
           ),
