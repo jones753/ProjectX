@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'Personal Mentor',
+                      'Aura',
                       style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 32,
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Your personal AI mentor for daily growth',
+                      'Your personal guide to daily growth',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: const Color(0xFF8E8E93),
                             fontSize: 15,

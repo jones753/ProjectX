@@ -34,14 +34,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   static const List<_WelcomePageData> _pages = [
     _WelcomePageData(
-      title: 'Welcome to the\nMentor App!',
-      subtitle: 'Your personal AI mentor for daily growth',
-      icon: Icons.school,
+      title: 'Welcome to\nAura',
+      subtitle: 'Your personal guide to daily growth',
+      icon: Icons.auto_awesome,
     ),
     _WelcomePageData(
       title: 'Your Personal\nGrowth Journey',
       subtitle:
-          'Track habits, set goals, and receive personalized guidance from your AI mentor',
+          'Track habits, set goals, and receive personalized guidance tailored to you',
       icon: Icons.trending_up,
     ),
     _WelcomePageData(

@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
       valueListenable: ThemeService.mode,
       builder: (context, themeMode, _) {
         return MaterialApp(
-          title: 'Personal Mentor',
+          title: 'Aura',
           theme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
