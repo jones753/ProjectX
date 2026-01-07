@@ -120,7 +120,7 @@ class _DashboardTabState extends State<DashboardTab> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal Mentor'),
+        title: const Text('Aura Mentor'),
         elevation: 0,
         actions: [
           PopupMenuButton<String>(
@@ -198,7 +198,7 @@ class _DashboardTabState extends State<DashboardTab> with SingleTickerProviderSt
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Today\'s Progress',
+                      'Message of the Day',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 13,
@@ -207,7 +207,7 @@ class _DashboardTabState extends State<DashboardTab> with SingleTickerProviderSt
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Keep Building Your Habits 🚀',
+                      'Less talk, more action.',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -216,7 +216,7 @@ class _DashboardTabState extends State<DashboardTab> with SingleTickerProviderSt
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Your consistency matters. Every habit completed brings you closer to your goals.',
+                      'Your consistency matters. Every routine completed brings you closer to your goals.',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.8),
                         fontSize: 13,
