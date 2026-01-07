@@ -1,7 +1,5 @@
 # Aura
 
-Your personal guide to daily growth.
-
 Aura is a mobile app that helps you build better habits through daily routine tracking, mood logging, and AI-powered personalized feedback from a customizable mentor.
 
 ## Features
