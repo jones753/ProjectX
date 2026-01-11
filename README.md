@@ -2,10 +2,19 @@
 
 Aura is a mobile app that helps you build better habits through daily routine tracking, mood logging, and AI-powered personalized feedback from a customizable mentor.
 
+## Plan
+Original plan for this project was to build:
+- Personal AI mentor
+- When creating the personal mentor, user can choose the mentor personality
+- Based on the personality and what the user tells about his life goals, what kind of routines the user wishes etc the mentor creates some routines for the user.
+- The user then daily logs how did the routines went etc.
+- In the end of the day the mentor gives feedback.
+- Using OpenAI API for the routine generation + feedback system (custom prompt)
+
 ## Features
 
+- **AI-powered routine generation**
 - **Daily Routine Tracking** - Create and track routines with scheduling, priority, and difficulty settings
-- **Mood & Energy Logging** - Log daily mood, energy, and stress levels with notes
 - **AI-Powered Feedback** - Receive personalized guidance based on your progress
 
 ## Screenshots
